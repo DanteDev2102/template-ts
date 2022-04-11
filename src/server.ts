@@ -1,12 +1,12 @@
 import { createHttpTerminator } from 'http-terminator';
 import app from './app';
 import config from './config';
-import connect from './database/connect.db';
+import { connectDB } from './database';
 
 const server = app.listen(config.portServer, () => {
-  console.log(`server listenin on ${config.portServer}`);
+  console.log(`server listenin on ${config.hostServer}:${config.portServer}`);
   console.log('kill server press ctrl + c');
-  connect(config.mongoURI);
+  connectDB(config.mongoURI);
 });
 
 const httpterminator = createHttpTerminator({ server });

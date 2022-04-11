@@ -1,28 +1,28 @@
 {
-	"compilerOptions": {
-		"target": "es6",
-		"module": "commonjs",
-		"allowJs": true,
-		"sourceMap": true,
-		"outDir": "./dist",
-		"rootDir": ".",
-		"noEmit": false,
-		"resolveJsonModule": true,
-		"strict": true,
-		"noImplicitAny": true,
-		"noUnusedLocals": true,
-		"noImplicitReturns": true,
-		"noUnusedParameters": true,
-		"moduleResolution": "node",
-		"baseUrl": "./",
-		"noFallthroughCasesInSwitch": true,
-		"paths": {
-			"@/*": ["src/*"]
-		},
-		"esModuleInterop": true,
-		"types": ["node", "express", "mocha", "chai", "bcryptjs"],
-		"skipLibCheck": false
-	},
-	"include": ["./src", ".eslintrc.js"],
-	"exclude": ["node_modules", "./dist", "./src/__tests__"]
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "allowJs": true,
+    "sourceMap": true,
+    "outDir": "./dist",
+    "rootDir": ".",
+    "noEmit": false,
+    "resolveJsonModule": true,
+    "strict": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noImplicitReturns": true,
+    "noUnusedParameters": true,
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "@/*": ["src/*"]
+    },
+    "esModuleInterop": true,
+    "types": ["node", "express", "mocha", "chai", "bcryptjs"],
+    "skipLibCheck": false
+  },
+  "include": ["./src", ".eslintrc.js"],
+  "exclude": ["node_modules", "./dist", "./src/__tests__"]
 }
