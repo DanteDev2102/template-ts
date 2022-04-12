@@ -14,10 +14,7 @@ const mySchema = new Schema<IUser>({
     type: String,
     required: true
   },
-  picture: {
-    type: String,
-    default: 'hola'
-  }
+  avatar: String
 });
 
 export const UserSchema = model<IUser>('user', mySchema);

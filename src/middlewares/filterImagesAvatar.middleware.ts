@@ -40,6 +40,6 @@ const fileFilter: any = (
 };
 
 export default multer({
-  storage,
-  fileFilter
+  storage: storage,
+  fileFilter: fileFilter
 });

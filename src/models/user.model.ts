@@ -4,6 +4,6 @@ export interface IUser extends Document {
   password: string;
   passwordConfirm?: string;
   email?: string;
-  picture?: string;
+  avatar?: string;
   token?: string;
 }
