@@ -31,7 +31,6 @@
     "morgan": "^1.10.0",
     "multer": "^1.4.4",
     "rate-limiter-flexible": "^2.3.6",
-    "strip-json-comments": "^4.0.0",
     "swagger-jsdoc": "^6.2.0",
     "swagger-ui-express": "^4.3.0"
   },
