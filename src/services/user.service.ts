@@ -4,11 +4,13 @@ import { hash } from 'bcryptjs';
 import { CreateNewUser } from '../database/storage/user.store';
 import config from '../config';
 
-export const RegisterUser = async (newUserData: IUser, { filename }: any, errors: any) => {
+export const RegisterUser = async (newUserData: IUser, { filename }: any, errors: any): Promise<any> => {
   if (!errors.isEmpty()) {
     const error = errors.array().map((error: ErrorExpressValidator) => error.msg);
     return Promise.reject({ message: error });
   }
+
+  if (filename) newUserData.avatar = `${config.hostServer}:${config.portServer}/files/${filename}`;
 
   const { password, passwordConfirm } = newUserData;
 
@@ -20,8 +22,6 @@ export const RegisterUser = async (newUserData: IUser, { filename }: any, errors
   } catch (error) {
     return Promise.reject({ message: 'error in register user' });
   }
-
-  if (filename) newUserData.avatar = `${config.hostServer}:${config.portServer}/files/${filename}`;
 
   const newUser = await CreateNewUser(newUserData);
   if (newUser.error) return Promise.reject({ message: newUser.error });

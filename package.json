@@ -13,7 +13,7 @@
 	"scripts": {
 		"dev": "ts-node-dev ./src/server.ts",
 		"build": "yarn test && tsc -p .",
-		"test": "mocha ./src/__tests__/*test.ts",
+		"test": "mocha -r ts-node/register ./src/__tests__/*.test.ts",
 		"lint": "eslint",
 		"start": "node dist/server.js"
 	},
