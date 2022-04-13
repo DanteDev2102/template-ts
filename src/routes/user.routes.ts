@@ -1,26 +1,33 @@
 import { IUser } from '@/models';
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, IRouter } from 'express';
 import { body, validationResult } from 'express-validator';
 import { RegisterUser } from '../services';
 
-const routes = Router();
+const routes: IRouter = Router();
 
 routes.post(
   '/',
   [
-    body('username').isAlphanumeric(),
-    body('email').isEmail(),
-    body('password').isStrongPassword(),
-    body('passwordConfirm').isStrongPassword()
+    body('username').isAlphanumeric().trim().escape(),
+    body('email').isEmail().normalizeEmail(),
+    body('password').isStrongPassword().trim().escape(),
+    body('passwordConfirm').isStrongPassword().trim().escape()
   ],
-  (req: Request, res: Response) => {
+  async (req: Request, res: Response) => {
     try {
       const errors = validationResult(req);
+
       const newUserData: IUser = req.body;
-      const newUser = RegisterUser(newUserData, errors);
+
+      const newUser = await RegisterUser(newUserData, errors);
+
       res.status(201).send(newUser);
-    } catch (error) {
-      res.status(500).send(error);
+    } catch ({ message }) {
+      if (Array.isArray(message)) res.status(400).send(message);
+      else if (message === 'passwords are diferents') res.status(400).send(message);
+      else if (message === 'error in register user') res.status(500).send(message);
+      else if (message === 'there is already a registered user') res.status(401).send(message);
+      res.send('hola');
     }
   }
 );
