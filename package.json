@@ -14,9 +14,7 @@
 		"dev": "ts-node-dev ./src/server.ts",
 		"build": "yarn test && tsc -p .",
 		"test": "mocha -r ts-node/register ./src/__tests__/*.test.ts",
-		"lint": "eslint",
-		"start": "node dist/server.js",
-		"prepare": "husky install"
+		"start": "node dist/server.js"
 	},
 	"dependencies": {
 		"bcryptjs": "^2.4.3",
