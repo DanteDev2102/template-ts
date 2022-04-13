@@ -1,3 +1,3 @@
-export { default as connectDB } from './connect.db';
-export * from './schemas';
-export * from './storage';
+export * from './connect.db'
+export * from './schemas'
+export * from './storage'

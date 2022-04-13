@@ -1,15 +1,10 @@
+import { IUser } from '@/models';
+import { ErrorExpressValidator } from '@/models/errors.model';
 import { hash } from 'bcryptjs';
 import { CreateNewUser } from '../database/storage/user.store';
-//import { IUser } from '../models/user.model';
+import config from '../config';
 
-type ErrorExpressValidator = {
-  value: string;
-  msg: string;
-  param: string;
-  location: string;
-};
-
-export const RegisterUser = async (newUserData: any, errors: any) => {
+export const RegisterUser = async (newUserData: IUser, { filename }: any, errors: any) => {
   if (!errors.isEmpty()) {
     const error = errors.array().map((error: ErrorExpressValidator) => error.msg);
     return Promise.reject({ message: error });
@@ -26,10 +21,12 @@ export const RegisterUser = async (newUserData: any, errors: any) => {
     return Promise.reject({ message: 'error in register user' });
   }
 
-  const newUser: any = await CreateNewUser(newUserData);
-  console.log('hola');
+  if (filename) newUserData.avatar = `${config.hostServer}:${config.portServer}/files/${filename}`;
 
+  const newUser = await CreateNewUser(newUserData);
   if (newUser.error) return Promise.reject({ message: newUser.error });
+
+  delete newUser.error;
 
   return Promise.resolve({ message: 'user created successfully', data: newUser });
 };

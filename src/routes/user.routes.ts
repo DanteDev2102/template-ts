@@ -2,14 +2,16 @@ import { IUser } from '@/models';
 import { Router, Request, Response, IRouter } from 'express';
 import { body, validationResult } from 'express-validator';
 import { RegisterUser } from '../services';
+import { __filterImages } from '../middlewares/';
 
 const routes: IRouter = Router();
 
 routes.post(
   '/',
   [
+    __filterImages.single('avatar'),
     body('username').isAlphanumeric().trim().escape(),
-    body('email').isEmail().normalizeEmail(),
+    body('email').isEmail().normalizeEmail().trim().escape(),
     body('password').isStrongPassword().trim().escape(),
     body('passwordConfirm').isStrongPassword().trim().escape()
   ],
@@ -19,15 +21,15 @@ routes.post(
 
       const newUserData: IUser = req.body;
 
-      const newUser = await RegisterUser(newUserData, errors);
+      const newUser = await RegisterUser(newUserData, req.file, errors);
 
       res.status(201).send(newUser);
     } catch ({ message }) {
       if (Array.isArray(message)) res.status(400).send(message);
       else if (message === 'passwords are diferents') res.status(400).send(message);
       else if (message === 'error in register user') res.status(500).send(message);
-      else if (message === 'there is already a registered user') res.status(401).send(message);
-      res.send('hola');
+      else if (message === 'there is already a registered user') res.status(417).send(message);
+      else res.status(500).send('internal error');
     }
   }
 );

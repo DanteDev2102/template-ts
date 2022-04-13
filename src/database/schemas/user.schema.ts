@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose';
-import { IUser } from '../../models/user.model';
+import { IUser } from '@/models/user.model';
+import config from '../../config';
 
 const mySchema = new Schema<IUser>({
   username: {
@@ -14,7 +15,10 @@ const mySchema = new Schema<IUser>({
     type: String,
     required: true
   },
-  avatar: String
+  avatar: {
+    type: String,
+    default: `${config.hostServer}:${config.portServer}/files/default.webp`
+  }
 });
 
 export const UserSchema = model<IUser>('user', mySchema);

@@ -10,5 +10,4 @@ app.listen(config.portServer, () => {
 
 process.on('uncaughtException', error => {
   console.error('uncaugth exception: ', error);
-  process.exit(1);
 });
