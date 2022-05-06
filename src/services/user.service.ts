@@ -5,28 +5,32 @@ import { CreateNewUser } from '../database/storage/user.store';
 import config from '../config';
 
 export const RegisterUser = async (newUserData: IUser, { filename }: any, errors: any): Promise<any> => {
-  if (!errors.isEmpty()) {
-    const error = errors.array().map((error: ErrorExpressValidator) => error.msg);
-    return Promise.reject({ message: error });
-  }
-
-  if (filename) newUserData.avatar = `${config.hostServer}:${config.portServer}/files/${filename}`;
-
-  const { password, passwordConfirm } = newUserData;
-
-  if (password !== passwordConfirm) return Promise.reject({ message: 'passwords are diferents' });
-  delete newUserData.passwordConfirm;
-
   try {
-    newUserData.password = await hash(password, 10);
+    if (!errors.isEmpty()) {
+      const error = errors.array().map((error: ErrorExpressValidator) => error.msg);
+      throw new Error(error);
+    }
+
+    if (filename) newUserData.avatar = `${config.hostServer}:${config.portServer}/files/${filename}`;
+
+    const { password, passwordConfirm } = newUserData;
+
+    if (password !== passwordConfirm) throw new Error('passwords are diferents');
+    delete newUserData.passwordConfirm;
+
+    try {
+      newUserData.password = await hash(password, 10);
+    } catch (error) {
+      throw new Error('error in register user');
+    }
+
+    const newUser = await CreateNewUser(newUserData);
+    if (newUser.error) throw new Error(newUser.error);
+
+    delete newUser.error;
+
+    return { message: 'user created successfully', data: newUser };
   } catch (error) {
-    return Promise.reject({ message: 'error in register user' });
+    return error;
   }
-
-  const newUser = await CreateNewUser(newUserData);
-  if (newUser.error) return Promise.reject({ message: newUser.error });
-
-  delete newUser.error;
-
-  return Promise.resolve({ message: 'user created successfully', data: newUser });
 };
