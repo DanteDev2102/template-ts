@@ -5,7 +5,7 @@ type DestinationCallback = (error: Error | null, destination: string) => void;
 type FileNameCallback = (error: Error | null, filename: string) => void;
 
 const storage: multer.StorageEngine = multer.diskStorage({
-  destination: (_req: Request, _file: Express.Multer.File, cb: DestinationCallback) => {
+  destination: (_req: Request, _file: Express.Multer.File, cb: DestinationCallback): void => {
     cb(null, 'src/files');
   },
   filename: (_, file: Express.Multer.File, cb: FileNameCallback) => {
@@ -13,7 +13,7 @@ const storage: multer.StorageEngine = multer.diskStorage({
   }
 });
 
-const fileFilter = (_req: Request, { mimetype }: Express.Multer.File, callback: FileFilterCallback) => {
+const fileFilter = (_req: Request, { mimetype }: Express.Multer.File, callback: FileFilterCallback): void => {
   if (mimetype === 'image/png' || mimetype === 'image/jpg' || mimetype === 'image/jpeg') {
     callback(null, true);
   } else {
@@ -21,7 +21,7 @@ const fileFilter = (_req: Request, { mimetype }: Express.Multer.File, callback: 
   }
 };
 
-export default multer({
-  storage: storage,
-  fileFilter: fileFilter
+export const filterAvatarImages = multer({
+  storage,
+  fileFilter
 });

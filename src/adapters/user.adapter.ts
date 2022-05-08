@@ -1,11 +1,10 @@
-import { IUser } from '@/models';
+import { TUser } from '../types';
 
-export const FormatUserData = (user: IUser) => {
+export const FormatUserData = async (user: TUser): Promise<TUser> => {
   return {
     _id: user._id,
     username: user.username,
     email: user.email,
-    avatar: user.avatar,
-    error: ''
+    avatar: user.avatar
   };
 };

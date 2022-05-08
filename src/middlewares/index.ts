@@ -1,1 +1,2 @@
-export { default as __filterImages } from './filterImagesAvatar.middleware';
+export * from './filterAvatarImages.middleware';
+export * from './validateSchema.middleware';

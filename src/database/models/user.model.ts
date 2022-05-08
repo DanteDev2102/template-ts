@@ -1,8 +1,8 @@
 import { Schema, model } from 'mongoose';
-import { IUser } from '@/models/user.model';
+import { IUser } from '@/database/types';
 import config from '../../config';
 
-const mySchema = new Schema<IUser>({
+const myModel = new Schema<IUser>({
   username: {
     type: String,
     required: true
@@ -13,14 +13,13 @@ const mySchema = new Schema<IUser>({
   },
   email: {
     type: String,
-    required: true
+    required: true,
+    unique: true
   },
   avatar: {
     type: String,
-    default: `${config.hostServer}:${config.portServer}/files/default.webp`
+    default: `${config.hostServer}:${config.portServer}/files/default.png`
   }
 });
 
-export const UserSchema = model<IUser>('user', mySchema);
-
-export default UserSchema;
+export const UserModel = model<IUser>('user', myModel);

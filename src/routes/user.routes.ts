@@ -1,37 +1,20 @@
-import { IUser } from '@/models';
 import { Router, Request, Response, IRouter } from 'express';
-import { body, validationResult } from 'express-validator';
-import { RegisterUser } from '../services';
-import { __filterImages } from '../middlewares/';
+import { validateSchema } from '../middlewares';
+import { CreateUserSchema } from '../schemas';
+import { CreateUserService } from '../api-services';
 
 const routes: IRouter = Router();
 
-routes.post(
-  '/',
-  [
-    __filterImages.single('avatar'),
-    body('username').isAlphanumeric().trim().escape(),
-    body('email').isEmail().normalizeEmail().trim().escape(),
-    body('password').isStrongPassword().trim().escape(),
-    body('passwordConfirm').isStrongPassword().trim().escape()
-  ],
-  async (req: Request, res: Response) => {
-    try {
-      const errors = validationResult(req);
-
-      const newUserData: IUser = req.body;
-
-      const newUser = await RegisterUser(newUserData, req.file, errors);
-
-      res.status(201).send(newUser);
-    } catch ({ message }) {
-      if (Array.isArray(message)) res.status(400).send(message);
-      else if (message === 'passwords are diferents') res.status(400).send(message);
-      else if (message === 'error in register user') res.status(500).send(message);
-      else if (message === 'there is already a registered user') res.status(417).send(message);
-      else res.status(500).send('internal error');
+routes.put('/register', validateSchema(CreateUserSchema), async (req: Request, res: Response): Promise<void> => {
+  try {
+    const newUser = await CreateUserService(req.body);
+    res.status(201).json(newUser);
+  } catch (error) {
+    if (error instanceof Error) {
+      res.status(500).json({ errors: [error.message] });
     }
+    res.status(500).json({ errors: error });
   }
-);
+});
 
 export default routes;

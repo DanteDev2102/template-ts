@@ -5,7 +5,7 @@ import { userRoutes } from '../routes';
 import { swagger } from '../docs';
 
 export const routes = (server: Application) => {
-  server.use('/users', userRoutes);
+  server.use('/user', userRoutes);
   server.use('/files', express.static(path.join(__dirname, '../files')));
   server.use('/docs', serve, setup(swagger));
 };

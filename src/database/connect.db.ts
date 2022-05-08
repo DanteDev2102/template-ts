@@ -12,5 +12,3 @@ export const connectDB = async (URI: string) => {
     process.exit(1);
   }
 };
-
-export default connectDB;

@@ -9,9 +9,7 @@
     "noEmit": false,
     "resolveJsonModule": true,
     "strict": true,
-    "noImplicitAny": true,
     "noUnusedLocals": true,
-    "noImplicitReturns": true,
     "noUnusedParameters": true,
     "moduleResolution": "node",
     "baseUrl": "./",
@@ -20,7 +18,7 @@
       "@/*": ["src/*"]
     },
     "esModuleInterop": true,
-    "types": ["node", "express", "mocha", "chai", "bcryptjs"],
+    "types": ["node", "express", "jest", "bcryptjs"],
     "skipLibCheck": false
   },
   "include": ["./src", ".eslintrc.js"],
